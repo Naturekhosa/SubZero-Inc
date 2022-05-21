@@ -36,6 +36,7 @@ class _BrowseListingsState extends State<BrowseListings> {
     'Books',
     'Electronics',
     'Clothing',
+    'Shoes',
     'Other'
   ];
 
@@ -67,6 +68,7 @@ class _BrowseListingsState extends State<BrowseListings> {
           }
           if (snapshot.connectionState == ConnectionState.done) {
             listings = snapshot.data as List;
+
             byFilter.clear();
 
             //No Filters Chosen
@@ -169,12 +171,12 @@ class _BrowseListingsState extends State<BrowseListings> {
                                                   ['listingCity'],
                                               itemName: byFilter[index]
                                                   ['itemName'],
-                                              productImage: byFilter[index]
-                                                  ['imageURL'],
                                               subCategories: byFilter[index]
                                                   ['subCategories'],
                                               timeStamp: byFilter[index]
                                                   ['listingTime'],
+                                              imagesUrls: byFilter[index]
+                                                  ['imagesUrls'],
                                             )));
                               },
                               child: Column(
@@ -186,7 +188,7 @@ class _BrowseListingsState extends State<BrowseListings> {
                                     child: AspectRatio(
                                       aspectRatio: 15 / 9,
                                       child: Image.network(
-                                        byFilter[index]['imageURL'],
+                                        byFilter[index]['imagesUrls'][0],
                                         fit: BoxFit.fill, // use this
                                       ),
                                     ),
@@ -202,7 +204,7 @@ class _BrowseListingsState extends State<BrowseListings> {
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(byFilter[index]['category']),
-                                      Text(byFilter[index]['listingTime']) 
+                                      Text(byFilter[index]['listingTime'])
                                     ],
                                   ))
                                 ],

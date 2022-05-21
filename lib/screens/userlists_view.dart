@@ -14,10 +14,10 @@ class Viewlist extends StatelessWidget {
   final String listingProvince;
   final String listingCity;
   final String itemName;
-  final String productImage;
   final String timeStamp;
   final String category;
   final String listingID;
+  final List imagesUrls;
   final List subCategories;
 
   const Viewlist(
@@ -26,7 +26,7 @@ class Viewlist extends StatelessWidget {
       required this.listingProvince,
       required this.listingCity,
       required this.itemName,
-      required this.productImage,
+      required this.imagesUrls,
       required this.timeStamp,
       required this.category,
       required this.listingID,
@@ -52,7 +52,7 @@ class Viewlist extends StatelessWidget {
                             listingProvince: listingProvince,
                             listingCity: listingCity,
                             itemName: itemName,
-                            productImage: productImage,
+                            imagesUrls: imagesUrls,
                             subCategories: subCategories,
                             timeStamp: timeStamp,
                             category: category,
@@ -67,7 +67,7 @@ class Viewlist extends StatelessWidget {
         ],
       ),
       body: Column(children: [
-        Image.network(productImage,
+        Image.network(imagesUrls[0],
             height: MediaQuery.of(context).size.height * 0.4,
             fit: BoxFit.cover),
         Expanded(

@@ -7,6 +7,7 @@ import 'package:swap_shop/models/user_model.dart';
 import 'package:swap_shop/screens/create_listing.dart';
 import 'package:swap_shop/screens/details_screen.dart';
 import 'package:swap_shop/screens/home_screen.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 //   "flutter upgrade" to upgrade flutter
 
 class DetailsScreen extends StatelessWidget {
@@ -14,9 +15,10 @@ class DetailsScreen extends StatelessWidget {
   final String listingProvince;
   final String listingCity;
   final String itemName;
-  final String productImage;
+
   final String timeStamp;
   final List subCategories;
+  final List imagesUrls;
 
   const DetailsScreen(
       {Key? key,
@@ -24,7 +26,7 @@ class DetailsScreen extends StatelessWidget {
       required this.listingProvince,
       required this.listingCity,
       required this.itemName,
-      required this.productImage,
+      required this.imagesUrls,
       required this.timeStamp,
       required this.subCategories})
       : super(key: key);
@@ -54,9 +56,32 @@ class DetailsScreen extends StatelessWidget {
         ],
       ),
       body: Column(children: [
-        Image.network(productImage,
-            height: MediaQuery.of(context).size.height * 0.4,
-            fit: BoxFit.cover),
+        ClipRRect(
+            borderRadius: BorderRadius.circular(0), // Image border
+            child: CarouselSlider(
+              options: CarouselOptions(height: 300.0),
+              items: imagesUrls.map((i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(color: Colors.amber),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(0), // Image border
+                        child: AspectRatio(
+                          aspectRatio: 15 / 9,
+                          child: Image.network(
+                            i,
+                            fit: BoxFit.fill, // use this
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            )),
 
         Expanded(
             child: Container(
@@ -64,7 +89,7 @@ class DetailsScreen extends StatelessWidget {
           decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+                  topLeft: Radius.circular(0), topRight: Radius.circular(0))),
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

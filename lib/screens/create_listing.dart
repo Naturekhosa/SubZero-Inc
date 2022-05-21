@@ -32,7 +32,6 @@ class _CreateListing extends State<CreateListing> {
   User? user = FirebaseAuth.instance.currentUser;
   UserModel userModel = UserModel();
   UserListingModel userListing = UserListingModel();
-  final List<String> subcategories = [];
   final _formKey = GlobalKey<FormState>();
   File? _image;
   final imagePicker = ImagePicker();
@@ -40,31 +39,71 @@ class _CreateListing extends State<CreateListing> {
   int curr = 1;
   bool visibility_clothe_size = false;
   bool visibility_Expire_date = false;
+  bool visibility_shoe_size = false;
   final List<String> categorys = [
     'Food',
     'Furniture',
     'Books',
     'Electronics',
     'Clothing',
+    'Shoes',
     'Other'
   ];
   final List<String> clothes_size = ['XS', 'S', 'M', 'L', 'XL'];
+  final List<String> Shoe_sizes = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14'
+  ];
   String? selectedCategory;
   String? selected_clothe_size;
-  Future imagePickerMethod() async {
-    //pick the image file from users local gallery
-    final pick = await imagePicker.pickImage(source: ImageSource.gallery);
+  String? selected_shoe_size;
 
-    //display their selected image in the container
-    //validate: if no image selected, and error is displayed
+  final _imagPicker = ImagePicker();
+  List<XFile>? _imageXFileList =
+      []; // store multiple XFile images that are picked at once.
+  List<File>? _imageFileList =
+      []; // store multiple File images,fire store only supot type File not XFile.
+  final List<String>? imagesurls = [];
+  final List<String> subcategories = [];
+
+  //the selectimages() function allows the user to select multiple images
+  //from their gallery.
+  Future selectImages() async {
+    //pick multiple images at once from the gallery.
+    final List<XFile>? selectedImages = await _imagPicker.pickMultiImage();
     setState(() {
-      if (pick != null) {
-        _image = File(pick.path);
+      if (selectedImages!.isNotEmpty) {
+        _imageXFileList =
+            []; // this cleares the imagefile list if a user wants to Re-select images.
+        _imageXFileList!.addAll(selectedImages);
+
+        //coverting XFile to File type.
+        for (var i = 0; i < _imageXFileList!.length; i++) {
+          _imageFileList!.add(File(_imageXFileList![i].path));
+        }
+        _image = _imageFileList![0];
+
+        showSnackBar(_imageXFileList!.length.toString() + " Images Selected",
+            Duration(seconds: 3));
       } else {
         //showing snackbar with error
-        showSnackBar("No File Selected", Duration(seconds: 2));
+        showSnackBar("No Image Selected", Duration(seconds: 2));
       }
     });
+
+    print("Number of Images : " + _imageXFileList!.length.toString());
   }
 
 //snack bar for error/success messages
@@ -106,7 +145,7 @@ class _CreateListing extends State<CreateListing> {
   //the following method accepts a string parameter of the image url
   //the listing details are then mapped together using the UserListingModel class
   //and added to the Firebase Database
-  postDetailsToFirestore(String imageURl, String listingID) async {
+  postDetailsToFirestore(List<String> imagesurl, String listingID) async {
     //calling firestore
     //calling our user listing model
     //sending values
@@ -125,13 +164,13 @@ class _CreateListing extends State<CreateListing> {
       subcategories.add("N/A");
     }
     userListing.description = descriptionEditingController.text;
-    userListing.imageURL = imageURl;
+    userListing.imagesUrls = imagesurl;
     userListing.listingTime = date_listed;
     userListing.listingID = listingID;
 
     //sending values to database as map
     await firebaseFirestore
-        .collection("Listing")
+        .collection("Listing2")
         .doc(userListing.listingID)
         .set(userListing.toMap());
 
@@ -139,28 +178,32 @@ class _CreateListing extends State<CreateListing> {
     await firebaseFirestore
         .collection("Users")
         .doc(userListing.uid)
-        .collection("Listing")
+        .collection("Listing2")
         .add({'listingID': listingID}).whenComplete(() => showSnackBar(
             "Listing Uploaded Successfully", Duration(seconds: 2)));
     subcategories.clear();
   }
 
-  //This method uploads the chosen image to Firebase Storage
+  //This method uploads the chosen images to Firebase Storage
   //It then extracts the download url of the image
   //Then calls the postDetailsToFirestore method to send the listing
   Future uploadData() async {
-    if (_formKey.currentState!.validate() && _image != null) {
-      String listingID =
-          FirebaseFirestore.instance.collection("Listing").doc().id;
-      final postID = DateTime.now().millisecondsSinceEpoch.toString();
-      Reference ref = FirebaseStorage.instance
-          .ref()
-          .child("${listingID}/images")
-          .child("post_$postID");
-      await ref.putFile(_image!);
-      downloadURL = await ref.getDownloadURL();
+    String listingID =
+        FirebaseFirestore.instance.collection("Listing2").doc().id;
+
+    if (_formKey.currentState!.validate()) {
+      for (var image in _imageFileList!) {
+        final postID = DateTime.now().millisecondsSinceEpoch.toString();
+        Reference ref = FirebaseStorage.instance
+            .ref()
+            .child("${listingID}/imagesUrls")
+            .child("post_$postID");
+        await ref.putFile(image!);
+        downloadURL = await ref.getDownloadURL();
+        imagesurls!.add(downloadURL!);
+      }
       //upload URL to cloud firestore
-      postDetailsToFirestore(downloadURL!, listingID);
+      postDetailsToFirestore(imagesurls!, listingID);
     }
   }
 
@@ -375,14 +418,23 @@ class _CreateListing extends State<CreateListing> {
                                   true; // show clothe size dropdown.
                               visibility_Expire_date =
                                   false; // hide expiring date field
+                              visibility_shoe_size = false;
                             } else if (selectedCategory == "Food") {
                               visibility_Expire_date =
                                   true; // show expiring date field.
                               visibility_clothe_size =
                                   false; //hide clothe size dropdown.
+                              visibility_shoe_size = false;
+                            } else if (selectedCategory == "Shoes") {
+                              visibility_shoe_size = true;
+                              visibility_Expire_date =
+                                  false; // show expiring date field.
+                              visibility_clothe_size =
+                                  false; //hide clothe size dropdown.
                             } else {
                               visibility_clothe_size = false;
                               visibility_Expire_date = false;
+                              visibility_shoe_size = false;
                             }
                           });
                         },
@@ -454,10 +506,82 @@ class _CreateListing extends State<CreateListing> {
                           onChanged: (val) {
                             setState(() {
                               selected_clothe_size = val.toString();
+                              subcategories.add(selected_clothe_size!);
                             });
                           },
                           onSaved: (value) {
                             selected_clothe_size = value.toString();
+                          },
+                          dropdownMaxHeight: 200,
+                          dropdownWidth: 200,
+                          dropdownElevation: 8,
+                          scrollbarRadius: const Radius.circular(40),
+                          scrollbarThickness: 6,
+                          scrollbarAlwaysShow: true,
+                          offset: const Offset(10, 0),
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: 10,
+                      ),
+
+                      // Dropdown for shoe sizes.
+                      Visibility(
+                        visible: visibility_shoe_size,
+                        child: DropdownButtonFormField2(
+                          decoration: InputDecoration(
+                            //Add isDense true and zero Padding.
+                            //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            prefixIcon: Icon(Icons.category),
+                            //Add more decoration as you want here
+                            //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                          ),
+                          isExpanded: true,
+                          hint: const Text(
+                            'Select Shoe Size',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.black45,
+                          ),
+                          iconSize: 30,
+                          buttonHeight: 60,
+                          buttonPadding:
+                              const EdgeInsets.only(left: 20, right: 10),
+                          dropdownDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Color.fromARGB(255, 255, 98, 87)),
+                          items:
+                              Shoe_sizes.map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  )).toList(),
+                          validator: (value) {
+                            if (value == null) {
+                              return '      Please select shoe size.';
+                            }
+                          },
+                          onChanged: (val) {
+                            setState(() {
+                              selected_shoe_size = val.toString();
+                              subcategories.add(selected_shoe_size!);
+                            });
+                          },
+                          onSaved: (value) {
+                            selected_shoe_size = value.toString();
                           },
                           dropdownMaxHeight: 200,
                           dropdownWidth: 200,
@@ -587,16 +711,16 @@ class _CreateListing extends State<CreateListing> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ElevatedButton.icon(
-                icon: Icon(Icons.camera),
-                onPressed: () {
-                  takePhoto(ImageSource.camera);
-                },
-                label: Text("Camera"),
-              ),
-              SizedBox(
-                width: 30,
-              ),
+              // ElevatedButton.icon(
+              //   icon: Icon(Icons.camera),
+              //   onPressed: () {
+              //     takePhoto(ImageSource.camera);
+              //   },
+              //   label: Text("Camera"),
+              // ),
+              // SizedBox(
+              //   width: 30,
+              // ),
               ElevatedButton.icon(
                 icon: Icon(Icons.image),
                 onPressed: () {

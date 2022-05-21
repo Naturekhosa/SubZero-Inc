@@ -72,7 +72,7 @@ class _YourLists extends State<YourLists> {
                       return ListTile(
                         leading: CircleAvatar(
                             backgroundImage:
-                                NetworkImage(listings[index]['imageURL'])),
+                                NetworkImage(listings[index]['imagesUrls'][0])),
                         title: Text(listings[index]['itemName']),
                         subtitle: Text(listings[index]['description']),
                         onTap: () {
@@ -87,8 +87,8 @@ class _YourLists extends State<YourLists> {
                                         listingCity: listings[index]
                                             ['listingCity'],
                                         itemName: listings[index]['itemName'],
-                                        productImage: listings[index]
-                                            ['imageURL'],
+                                        imagesUrls: listings[index]
+                                            ['imagesUrls'],
                                         subCategories: listings[index]
                                             ['subCategories'],
                                         timeStamp: listings[index]

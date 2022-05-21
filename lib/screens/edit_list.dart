@@ -20,10 +20,10 @@ class EditList extends StatefulWidget {
   final String listingProvince;
   final String listingCity;
   final String itemName;
-  final String productImage;
   final String timeStamp;
   final String category;
   final String listingID;
+  final List imagesUrls;
   final List subCategories;
   const EditList(
       {Key? key,
@@ -31,7 +31,7 @@ class EditList extends StatefulWidget {
       required this.listingProvince,
       required this.listingCity,
       required this.itemName,
-      required this.productImage,
+      required this.imagesUrls,
       required this.timeStamp,
       required this.category,
       required this.listingID,
@@ -55,6 +55,7 @@ class _Editlist extends State<EditList> {
   UserModel userModel = UserModel();
   UserListingModel userListing = UserListingModel();
   final List<String> subcategories = [];
+  List<String> imagesUrls = [];
   final _formKey = GlobalKey<FormState>();
   File? _image;
   final imagePicker = ImagePicker();
@@ -62,34 +63,71 @@ class _Editlist extends State<EditList> {
   int curr = 1;
   bool visibility_clothe_size = false;
   bool visibility_Expire_date = false;
+  bool visibility_shoe_size = false;
   final List<String> categorys = [
     'Food',
     'Furniture',
     'Books',
     'Electronics',
     'Clothing',
+    'Shoes',
     'Other'
   ];
   final List<String> clothes_size = ['XS', 'S', 'M', 'L', 'XL'];
+  final List<String> Shoe_sizes = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14'
+  ];
   String? selectedCategory;
   String? selectedvalue;
   String? selectedsize;
-
+  String? selectedsizeshoes;
   String? selected_clothe_size;
-  Future imagePickerMethod() async {
-    //pick the image file from users local gallery
-    final pick = await imagePicker.pickImage(source: ImageSource.gallery);
+  String? selected_shoe_size;
+  final _imagPicker = ImagePicker();
+  List<XFile>? _imageXFileList =
+      []; // store multiple XFile images that are picked at once.
+  List<File>? _imageFileList =
+      []; // store multiple File images,fire store only supot type File not XFile.
 
-    //display their selected image in the container
-    //validate: if no image selected, and error is displayed
+  //the selectimages() function allows the user to select multiple images
+  //from their gallery.
+  Future selectImages() async {
+    //pick multiple images at once from the gallery.
+    final List<XFile>? selectedImages = await _imagPicker.pickMultiImage();
     setState(() {
-      if (pick != null) {
-        _image = File(pick.path);
+      if (selectedImages!.isNotEmpty) {
+        _imageXFileList =
+            []; // this cleares the imagefile list if a user wants to Re-select images.
+        _imageXFileList!.addAll(selectedImages);
+
+        //coverting XFile to File type.
+        for (var i = 0; i < _imageXFileList!.length; i++) {
+          _imageFileList!.add(File(_imageXFileList![i].path));
+        }
+        _image = _imageFileList![0];
+
+        showSnackBar(_imageXFileList!.length.toString() + " Images Selected",
+            Duration(seconds: 3));
       } else {
         //showing snackbar with error
-        showSnackBar("No File Selected", Duration(seconds: 2));
+        showSnackBar("No Image Selected", Duration(seconds: 2));
       }
     });
+
+    print("Number of Images : " + _imageXFileList!.length.toString());
   }
 
 //snack bar for error/success messages
@@ -127,17 +165,27 @@ class _Editlist extends State<EditList> {
         if (widget.category.toString() == "Clothing") {
           selectedsize = widget.subCategories[0].toString();
         }
+        if (widget.category.toString() == "Shoes") {
+          selectedsizeshoes = widget.subCategories[0].toString();
+        }
 
         subcategories.clear();
         if (selectedvalue == "Clothing") {
           visibility_clothe_size = true; // show clothe size dropdown.
           visibility_Expire_date = false; // hide expiring date field
+          visibility_shoe_size = false;
         } else if (selectedvalue == "Food") {
           visibility_Expire_date = true; // show expiring date field.
+          visibility_clothe_size = false; //hide clothe size dropdown.
+          visibility_shoe_size = false;
+        } else if (selectedvalue == "Shoes") {
+          visibility_shoe_size = true;
+          visibility_Expire_date = false; // show expiring date field.
           visibility_clothe_size = false; //hide clothe size dropdown.
         } else {
           visibility_clothe_size = false;
           visibility_Expire_date = false;
+          visibility_shoe_size = false;
         }
       });
     });
@@ -160,7 +208,7 @@ class _Editlist extends State<EditList> {
   //the following method accepts a string parameter of the image url
   //the listing details are then mapped together using the UserListingModel class
   //and added to the Firebase Database
-  postDetailsToFirestore(String imageURl, String listingID) async {
+  postDetailsToFirestore(List<String> imagesurl, String listingID) async {
     //calling firestore
     //calling our user listing model
     //sending values
@@ -184,15 +232,21 @@ class _Editlist extends State<EditList> {
       //subcategories.add("N/A");
     }
     userListing.description = descriptionEditingController.text;
-    userListing.imageURL = imageURl;
+    print("number of uploaded images = " +
+        imagesUrls.length.toString()); //debugging
+    userListing.imagesUrls = imagesurl;
     userListing.listingTime = date_listed;
     userListing.listingID = listingID;
 
     //sending values to database as map
     await firebaseFirestore
-        .collection("Listing")
+        .collection("Listing2")
         .doc(userListing.listingID)
-        .update(userListing.toMap());
+        .update(userListing.toMap())
+        .whenComplete(
+            () => Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => YourLists(),
+                )));
 
     //linking listing to the current user
     subcategories.clear();
@@ -202,16 +256,22 @@ class _Editlist extends State<EditList> {
   //It then extracts the download url of the image
   //Then calls the postDetailsToFirestore method to send the listing
   Future uploadData() async {
-    if (_formKey.currentState!.validate() && _image != null) {
-      final postID = DateTime.now().millisecondsSinceEpoch.toString();
-      Reference ref = FirebaseStorage.instance
-          .ref()
-          .child("${widget.listingID}/images")
-          .child("post_$postID");
-      await ref.putFile(_image!);
-      downloadURL = await ref.getDownloadURL();
+    String listingID =
+        FirebaseFirestore.instance.collection("Listing2").doc().id;
+
+    if (_formKey.currentState!.validate()) {
+      for (var image in _imageFileList!) {
+        final postID = DateTime.now().millisecondsSinceEpoch.toString();
+        Reference ref = FirebaseStorage.instance
+            .ref()
+            .child("${listingID}/imagesUrls")
+            .child("post_$postID");
+        await ref.putFile(image!);
+        downloadURL = await ref.getDownloadURL();
+        imagesUrls!.add(downloadURL!);
+      }
       //upload URL to cloud firestore
-      postDetailsToFirestore(downloadURL!, widget.listingID);
+      postDetailsToFirestore(imagesUrls!, widget.listingID);
     }
   }
 
@@ -327,21 +387,18 @@ class _Editlist extends State<EditList> {
         padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
         minWidth: 80,
         onPressed: () {
-          if (_image == null) {
-            postDetailsToFirestore(widget.productImage, widget.listingID);
+          if (_formKey.currentState!.validate() && _image == null) {
+            print("size is == " +
+                widget.imagesUrls.length.toString()); //debugging
+            List<String> urls = [];
+            for (var Images in widget.imagesUrls) {
+              urls.add(Images);
+            }
+            postDetailsToFirestore(urls, widget.listingID);
           } else {
+            print("New Images uploading"); //debugging
             uploadData();
           }
-          //added navigation and save confirmation
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => YourLists(),
-          ));
-
-          Fluttertoast.showToast(
-            msg: 'Listing Saved',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-          );
         },
         child: Text(
           "Save",
@@ -450,19 +507,29 @@ class _Editlist extends State<EditList> {
                                   true; // show clothe size dropdown.
                               visibility_Expire_date =
                                   false; // hide expiring date field
+                              visibility_shoe_size = false;
                             } else if (selectedCategory == "Food") {
                               visibility_Expire_date =
                                   true; // show expiring date field.
                               visibility_clothe_size =
                                   false; //hide clothe size dropdown.
+                              visibility_shoe_size = false;
+                            } else if (selectedCategory == "Shoes") {
+                              visibility_shoe_size = true;
+                              visibility_Expire_date =
+                                  false; // show expiring date field.
+                              visibility_clothe_size =
+                                  false; //hide clothe size dropdown.
                             } else {
                               visibility_clothe_size = false;
                               visibility_Expire_date = false;
+                              visibility_shoe_size = false;
                             }
                           });
                         },
                         onSaved: (value) {
                           if (selectedCategory == null) {
+                            subcategories.clear();
                             selectedCategory = widget.category.toString();
                           } else {
                             selectedCategory = value.toString();
@@ -555,6 +622,79 @@ class _Editlist extends State<EditList> {
                         height: 10,
                       ),
 
+                      // Dropdown for shoe sizes.
+                      Visibility(
+                        visible: visibility_shoe_size,
+                        child: DropdownButtonFormField2(
+                          decoration: InputDecoration(
+                            //Add isDense true and zero Padding.
+                            //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                            isDense: true,
+                            contentPadding: EdgeInsets.zero,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            prefixIcon: Icon(Icons.category),
+                            //Add more decoration as you want here
+                            //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                          ),
+                          isExpanded: true,
+                          hint: const Text(
+                            'Select Shoe Size',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.black45,
+                          ),
+                          iconSize: 30,
+                          buttonHeight: 60,
+                          buttonPadding:
+                              const EdgeInsets.only(left: 20, right: 10),
+                          dropdownDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Color.fromARGB(255, 255, 98, 87)),
+                          items:
+                              Shoe_sizes.map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  )).toList(),
+                          value: selectedsizeshoes,
+                          validator: (value) {
+                            if (value == null) {
+                              return '      Please select shoe size.';
+                            }
+                          },
+                          onChanged: (val) {
+                            setState(() {
+                              selectedsizeshoes = val as String?;
+                              selected_shoe_size = val.toString();
+                              subcategories.add(selectedsizeshoes!);
+                            });
+                          },
+                          onSaved: (value) {
+                            selected_shoe_size = value.toString();
+                          },
+                          dropdownMaxHeight: 200,
+                          dropdownWidth: 200,
+                          dropdownElevation: 8,
+                          scrollbarRadius: const Radius.circular(40),
+                          scrollbarThickness: 6,
+                          scrollbarAlwaysShow: true,
+                          offset: const Offset(10, 0),
+                        ),
+                      ),
+
+                      SizedBox(
+                        height: 10,
+                      ),
+
                       Expire_date_Field,
 
                       SizedBox(
@@ -592,17 +732,16 @@ class _Editlist extends State<EditList> {
                                     size: 30,
                                   )),
                               Container(
-                                height: 200,
-                                child: _image == null
-                                    ? Center(
-                                        child:
-                                            Image.network(widget.productImage))
-                                    : Image.file(
-                                        _image!,
-                                        width: 100,
-                                        height: 100,
-                                      ),
-                              ),
+                                  height: 200,
+                                  child: _image == null
+                                      ? Center(
+                                          child: Image.network(
+                                              widget.imagesUrls[0]))
+                                      : Image.file(
+                                          _image!,
+                                          width: 100,
+                                          height: 100,
+                                        ))
                             ],
                           ))),
 
@@ -637,20 +776,20 @@ class _Editlist extends State<EditList> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ElevatedButton.icon(
-                icon: Icon(Icons.camera),
-                onPressed: () {
-                  takePhoto(ImageSource.camera);
-                },
-                label: Text("Camera"),
-              ),
-              SizedBox(
-                width: 30,
-              ),
+              // ElevatedButton.icon(
+              //   icon: Icon(Icons.camera),
+              //   onPressed: () {
+              //     takePhoto(ImageSource.camera);
+              //   },
+              //   label: Text("Camera"),
+              // ),
+              // SizedBox(
+              //   width: 30,
+              // ),
               ElevatedButton.icon(
                 icon: Icon(Icons.image),
                 onPressed: () {
-                  takePhoto(ImageSource.gallery);
+                  selectImages();
                 },
                 label: Text("Gallery"),
               )
