@@ -724,7 +724,7 @@ class _CreateListing extends State<CreateListing> {
               ElevatedButton.icon(
                 icon: Icon(Icons.image),
                 onPressed: () {
-                  takePhoto(ImageSource.gallery);
+                  selectImages();
                 },
                 label: Text("Gallery"),
               )
