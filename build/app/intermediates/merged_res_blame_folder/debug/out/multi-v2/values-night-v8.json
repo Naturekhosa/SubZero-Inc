@@ -1,17 +1,17 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\netsh\\Documents\\COMS_3_2022\\Software_Design\\zero3\\SubZero-Inc\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "outputFile": "/Users/Kayleize/Desktop/CloneSubZero-Inc/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\netsh\\Documents\\COMS_3_2022\\Software_Design\\zero3\\SubZero-Inc\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "/Users/Kayleize/Desktop/CloneSubZero-Inc/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
-                        "startOffsets": "175,820",
+                        "startOffsets": "172,806",
                         "endLines": "7,16",
                         "endColumns": "12,12",
-                        "endOffsets": "471,986"
+                        "endOffsets": "464,970"
                     },
                     "to": {
                         "startLines": "2,7",

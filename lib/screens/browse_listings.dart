@@ -23,10 +23,11 @@ class _BrowseListingsState extends State<BrowseListings> {
   String? provinceValue;
   String? cityValue;
   User? user = FirebaseAuth.instance.currentUser;
-  UserModel userModel = UserModel();
+  final currentUserId = FirebaseAuth.instance.currentUser?.uid;
   UserListingModel userListing = UserListingModel();
   int curr = 2;
   List listings = [];
+  List temp = [];
   String? selectedCategory = 'None';
   List byFilter = [];
   var categoryList = [
@@ -67,9 +68,14 @@ class _BrowseListingsState extends State<BrowseListings> {
             );
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            listings = snapshot.data as List;
+            temp = snapshot.data as List;
 
             byFilter.clear();
+            for (int i = 0; i < temp.length; i++) {
+              if (temp[i]['uid'] != currentUserId) {
+                listings.add(temp[i]);
+              }
+            }
 
             //No Filters Chosen
             if (selectedCategory == 'None' &&

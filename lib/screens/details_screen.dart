@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:swap_shop/chatSystem/chat_detail.dart';
 import 'package:swap_shop/models/database_manager.dart';
 import 'package:swap_shop/models/user_listing_model.dart';
 import 'package:swap_shop/models/user_model.dart';
@@ -68,13 +69,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   @override
-  Widget buildMessageButton() => FloatingActionButton.extended(
+  Widget buildMessageButton(context) => FloatingActionButton.extended(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         foregroundColor: Colors.white,
         backgroundColor: Colors.red,
         icon: Icon(Icons.message),
         label: Text('Message'),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => ChatDetail(
+                    friendUid: widget.listerUid,
+                  )));
+        },
       );
 
   Widget build(BuildContext context) {
@@ -180,7 +186,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
         ))
         // 40%
       ]),
-      floatingActionButton: buildMessageButton(),
+      floatingActionButton: buildMessageButton(context),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

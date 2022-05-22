@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:swap_shop/chatSystem/chats.dart';
 import 'package:swap_shop/models/user_model.dart';
 import 'package:swap_shop/screens/account_details_screen.dart';
 import 'package:swap_shop/screens/forgot_password_screen.dart';
@@ -134,6 +135,21 @@ class _MainNavigationDrawerState extends State<MainNavigationDrawer> {
           color: Colors.red,
         ),
         title: Text("Logout",
+            style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w400)),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      ListTile(
+        onTap: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => Chats()));
+        },
+        leading: Icon(
+          Icons.chat,
+          color: Colors.red,
+        ),
+        title: Text("Chats",
             style: TextStyle(fontSize: 17.0, fontWeight: FontWeight.w400)),
       )
     ]);
