@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\netsh\\Documents\\COMS_3_2022\\Software_Design\\zero3\\SubZero-Inc\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
+            "outputFile": "C:\\Users\\2359474\\Downloads\\sd_projects\\SubZero-Inc\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\netsh\\Documents\\COMS_3_2022\\Software_Design\\zero3\\SubZero-Inc\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "C:\\Users\\2359474\\Downloads\\sd_projects\\SubZero-Inc\\android\\app\\src\\main\\res\\values-night\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

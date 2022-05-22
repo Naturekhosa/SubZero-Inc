@@ -1,7 +1,13 @@
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:swap_shop/screens/account_details_screen.dart';
 import 'package:swap_shop/screens/browse_listings.dart';
 import 'package:swap_shop/screens/create_listing.dart';
+
+import 'package:swap_shop/screens/edit_list.dart';
+import 'package:swap_shop/screens/linklist.dart';
 import 'package:swap_shop/screens/main_navigation_drawer.dart';
+import 'package:swap_shop/screens/userlists_view.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -12,8 +18,20 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int curr = 0;
+
+
   @override
   Widget build(BuildContext context) {
+
+ FirebaseDynamicLinks.instance.onLink.listen((event) {
+              Uri deeplink = event.link;
+              String linker = deeplink.toString();
+
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => linklist(link: linker,)));
+      });
+
+  
     return Scaffold(
       appBar: AppBar(title: Text("Home")),
       drawer: Drawer(

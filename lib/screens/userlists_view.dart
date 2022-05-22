@@ -5,8 +5,11 @@ import 'package:swap_shop/models/user_listing_model.dart';
 import 'package:swap_shop/models/user_model.dart';
 import 'package:swap_shop/screens/create_listing.dart';
 import 'package:swap_shop/screens/details_screen.dart';
+import 'package:swap_shop/screens/dynamicLinkService.dart';
+
 import 'package:swap_shop/screens/edit_list.dart';
 import 'package:swap_shop/screens/home_screen.dart';
+import 'package:swap_shop/screens/linklist.dart';
 //   "flutter upgrade" to upgrade flutter
 
 class Viewlist extends StatelessWidget {
@@ -104,6 +107,19 @@ class Viewlist extends StatelessWidget {
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
                     child: Text("Upload Date : " + timeStamp)
+                    //style: Theme.of(context).textTheme.headlineSmall),
+                    ),
+                Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    child: TextButton(child: Text("Share "),onPressed: () async{
+                Future<String> answer=dynamicLinkService.createdynamicLink(itemName)   ;   
+                  print(answer);
+                  Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => linklist(link:answer.toString(),))); 
+                  
+                 
+                  print("this is our triel");                
+                    },)
                     //style: Theme.of(context).textTheme.headlineSmall),
                     ),
                 if ((category.toString() == "Clothing") &
