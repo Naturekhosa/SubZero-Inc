@@ -146,7 +146,7 @@ class _BrowseListingsState extends State<BrowseListings> {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         mainAxisSpacing: 1,
-                        crossAxisSpacing: 1,
+                        crossAxisSpacing: 0.5,
                       ),
                       itemCount: byFilter.length,
                       itemBuilder: (context, index) => Padding(
@@ -171,6 +171,9 @@ class _BrowseListingsState extends State<BrowseListings> {
                                                   ['listingCity'],
                                               itemName: byFilter[index]
                                                   ['itemName'],
+                                              listerUid: byFilter[index]['uid'],
+                                              Category: byFilter[index]
+                                                  ['category'],
                                               subCategories: byFilter[index]
                                                   ['subCategories'],
                                               timeStamp: byFilter[index]
@@ -193,20 +196,23 @@ class _BrowseListingsState extends State<BrowseListings> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                      child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        byFilter[index]['itemName'],
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(byFilter[index]['category']),
-                                      Text(byFilter[index]['listingTime'])
-                                    ],
-                                  ))
+                                  Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Container(
+                                        child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          byFilter[index]['itemName'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(byFilter[index]['category']),
+                                        Text(byFilter[index]['listingTime'])
+                                      ],
+                                    )),
+                                  )
                                 ],
                               ),
                             ),
