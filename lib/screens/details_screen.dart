@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,26 +13,59 @@ import 'package:swap_shop/screens/home_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 //   "flutter upgrade" to upgrade flutter
 
-class DetailsScreen extends StatelessWidget {
+class DetailsScreen extends StatefulWidget {
   final String description;
   final String listingProvince;
   final String listingCity;
   final String itemName;
-
+  final String Category;
   final String timeStamp;
   final List subCategories;
   final List imagesUrls;
-
+  final String listerUid;
   const DetailsScreen(
       {Key? key,
       required this.description,
       required this.listingProvince,
       required this.listingCity,
       required this.itemName,
+      required this.listerUid,
       required this.imagesUrls,
       required this.timeStamp,
+      required this.Category,
       required this.subCategories})
       : super(key: key);
+
+  @override
+  State<DetailsScreen> createState() => _DetailsScreenState();
+}
+
+class _DetailsScreenState extends State<DetailsScreen> {
+  User? user = FirebaseAuth.instance.currentUser;
+  UserModel userModel = UserModel();
+
+  String? currentImageURL;
+
+  @override
+  void initState() {
+    super.initState();
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(widget.listerUid)
+        .get()
+        .then((value) {
+      userModel = UserModel.fromMap(value.data());
+      setState(() {});
+    });
+    getImageURL();
+  }
+
+  Future getImageURL() async {
+    var collection = FirebaseFirestore.instance.collection("Users");
+    var docSnapshot = await collection.doc(widget.listerUid).get();
+    Map<String, dynamic>? data = docSnapshot.data();
+    currentImageURL = data?['ProfilePicture'];
+  }
 
   @override
   Widget buildMessageButton() => FloatingActionButton.extended(
@@ -51,7 +87,13 @@ class DetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {},
-            icon: CircleAvatar(backgroundColor: Colors.white),
+            icon: CircleAvatar(
+              backgroundColor: Colors.transparent,
+              backgroundImage: NetworkImage(
+                  "https://www.iconsdb.com/icons/preview/red/user-xxl.png"),
+              foregroundImage: NetworkImage(currentImageURL.toString()),
+              radius: 100,
+            ),
           )
         ],
       ),
@@ -60,7 +102,7 @@ class DetailsScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(0), // Image border
             child: CarouselSlider(
               options: CarouselOptions(height: 300.0),
-              items: imagesUrls.map((i) {
+              items: widget.imagesUrls.map((i) {
                 return Builder(
                   builder: (BuildContext context) {
                     return Container(
@@ -96,35 +138,39 @@ class DetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(children: [
-                  Text(
-                    itemName,
-                    style: Theme.of(context).textTheme.headline5,
-                  ), //item name display
+                  Text(userModel.username.toString(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline5), //item name display
                 ]),
 
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text("Description : " + description)),
+                    child: Text("Item Name : " + widget.itemName)),
 
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text("City : " + listingCity)
+                    child: Text("Description : " + widget.description)),
+
+                Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    child: Text("City : " + widget.listingCity)
                     //style: Theme.of(context).textTheme.headlineSmall),
                     ),
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text("Province : " + listingProvince)
+                    child: Text("Province : " + widget.listingProvince)
                     //style: Theme.of(context).textTheme.headlineSmall),
                     ),
 
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text("Upload Date : " + timeStamp)
+                    child: Text("Upload Date : " + widget.timeStamp)
                     //style: Theme.of(context).textTheme.headlineSmall),
                     ),
 
-                if ((subCategories[0] == "N/A") == false)
-                  Text(subCategories[0]),
+                if ((widget.subCategories[0] == "N/A") == false)
+                  Text(widget.subCategories[0]),
                 //{
                 // Text(subCategories[0]),
                 //};
