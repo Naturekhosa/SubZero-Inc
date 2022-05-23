@@ -83,7 +83,6 @@ In an effort to avoid waste and grow communities, many people have begun operati
 
 Go to "Code", select "Download ZIP file"
 
-
 Extract files, open Visual Studio Code (if you have not downloaded and set it up check out "Getting Started") and Open Folders
 
 Open "SubZero-Inc-main" and select emulator and click "Run and Debug"
