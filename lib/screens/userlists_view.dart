@@ -19,7 +19,7 @@ class Viewlist extends StatelessWidget {
   final String listingID;
   final List imagesUrls;
   final List subCategories;
-
+  // constructor for passing the preselect data from the userlist
   const Viewlist(
       {Key? key,
       required this.description,
@@ -106,12 +106,17 @@ class Viewlist extends StatelessWidget {
                     child: Text("Upload Date : " + timeStamp)
                     //style: Theme.of(context).textTheme.headlineSmall),
                     ),
+
+                //this adds an option for subcategories to be shown
                 if ((category.toString() == "Clothing") &
                     ((subCategories[0] == "N/A") == false))
                   Text("Clothing Size :" + subCategories[0]),
                 if ((category.toString() == "Food") &
                     ((subCategories[0] == "N/A") == false))
                   Text(subCategories[0]),
+                if ((category.toString() == "Shoes") &
+                    ((subCategories[0] == "N/A") == false))
+                  Text("Size : " + subCategories[0]),
               ],
             ),
           ),

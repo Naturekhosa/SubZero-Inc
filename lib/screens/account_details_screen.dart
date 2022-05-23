@@ -137,6 +137,7 @@ class _AccountDetailsState extends State<AccountDetails> {
         "https://www.iconsdb.com/icons/preview/red/user-xxl.png";
   }
 
+  // edit controllers for receiving input
   final TextEditingController nameEditingController =
       new TextEditingController();
   final TextEditingController surnameEditingController =
@@ -409,6 +410,7 @@ class _AccountDetailsState extends State<AccountDetails> {
     );
   }
 
+  //this will display the user's profile image
   Widget imageProfile() {
     return Center(
       child: Stack(
@@ -445,6 +447,7 @@ class _AccountDetailsState extends State<AccountDetails> {
     );
   }
 
+// this is for choosing the image the user wants to upload
   Widget bottomSheet() {
     return Container(
       height: 100.0,
