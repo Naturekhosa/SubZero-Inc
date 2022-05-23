@@ -45,7 +45,7 @@ Firebase is a platform developed by Google for creating mobile and web applicati
  -uses Firebase Authentication and Cloud Firestore Security Rules to handle serverless authentication, authorization, and data validation
  -keeps your data private and secure
  -very low maintenance
-Swap Shop application is integrated with Firebase via VS Code.
+
 
 ### Android Studio
 Android Studio is the official integrated development environment for Google's Android operating system, built on JetBrains' IntelliJ IDEA software and designed specifically for Android development. Flutter makes use of the Android SDK, and sets the environment variable to the SDK path for the flutter installation to recognise it, allowing for the front-end developemnt of the Swap Shop application.
