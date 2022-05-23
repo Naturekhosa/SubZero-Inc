@@ -89,7 +89,7 @@ Extract files, open Visual Studio Code (if you have not downloaded and set it up
 Open "SubZero-Inc-main" and select emulator and click "Run and Debug"
 
 ## CircleCI Badge
-[![CircleCI](https://circleci.com/gh/Naturekhosa/SubZero-Inc/tree/BrowseListings.svg?style=shield)](https://circleci.com/gh/Naturekhosa/SubZero-Inc/tree/BrowseListings)
+[![codecov](https://codecov.io/gh/Naturekhosa/SubZero-Inc/branch/BrowseListings/graph/badge.svg?token=Z46Q8CV70P)](https://codecov.io/gh/Naturekhosa/SubZero-Inc)
 =======
 Extract files, open Visual Studio Code (if you have not downloaded and set it up check out "Get Started") and Open Folders
 Open "SubZero-Inc-main" and select emulator and click "Run and Debug"
