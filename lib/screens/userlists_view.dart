@@ -116,7 +116,7 @@ class Viewlist extends StatelessWidget {
                   Text(subCategories[0]),
                 if ((category.toString() == "Shoes") &
                     ((subCategories[0] == "N/A") == false))
-                  Text("Size : " + subCategories[0]),
+                  Text("Shoe Size : " + subCategories[0]),
               ],
             ),
           ),
