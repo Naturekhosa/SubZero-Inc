@@ -77,7 +77,7 @@ In an effort to avoid waste and grow communities, many people have begun operati
 
 •	Use a trade window whereby they will be allowed to compare trades, add to trades, make listing private, etc. 
 
-•	Be able to report other users 
+
 
 ## How to Install and Run Project
 
