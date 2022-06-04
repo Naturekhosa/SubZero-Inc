@@ -59,16 +59,23 @@ Flutter is an open-source UI software development kit created by Google. It is u
 
 ## Project Description
 
-### Project scope
+In an effort to avoid waste and grow communities, many people have begun operating swap shops, where people swap food, clothes, furniture, etc. In this project we will be designing and implementing an app to facilitate this process for a community. Among other features, users will be able to:
 
-We aim to design and implement an app for users to swap different categories of items (food, clothes, furniture, etc.)
-The user data collected for the system will include the email address and the area in which the user resides in.
-Once data is saved in the system, the email address and password will be used to log into the system,  a verified email address will be used to retrieve a password in case a user forgets their password.
+•	Create a profile in which they will use to sign in to use the application
 
-### Purpose
+•	Create a listing in which they will be able take a picture and add a description of the item they wish to swap, which may include food, clothes, etc.
 
-The purpose of this app is to help facilitate the process of swapping items for communities which have started operating swap shops(where people swap food, clothes, furniture, etc.) in efforts to avoid waste and grow communities.
-The application will help users to easily find other users who also have items to swap.
+•	Browse through listed items (which will include a sort, filter, and search feature in later stages)
+
+•	Contact people who have listed an item they wish to swap, which will be via a chat system
+
+•	Keep track of what will be traded during a swap
+
+•	Organise to meet once a swap has been agreed upon such as a pickup/drop off service or delivery (with measures in place to avoid scams and other dangers)
+
+•	Use a rating system to rate products/users
+
+•	Use a trade window whereby they will be allowed to compare trades, add to trades, make listing private, etc. 
 
 
 ## How to Install and Run Project
