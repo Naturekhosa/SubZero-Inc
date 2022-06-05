@@ -210,7 +210,7 @@ class _TradeWindowState extends State<TradeWindow> {
                         appBar: AppBar(
                             backgroundColor: Colors.green,
                             automaticallyImplyLeading: false,
-                            title: Text(" Items")),
+                            title: Text(" Their Items")),
                         body: Container(
                           color: Colors.green,
                           child: ListView.builder(
