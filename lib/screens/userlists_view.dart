@@ -157,7 +157,6 @@ class _ViewlistState extends State<Viewlist> {
         children: <Widget>[
           FloatingActionButton(
             onPressed: () {
-              setState(() => _ViewlistState());
               deleteItem(docId: widget.listingID);
               Navigator.pop(context);
             },
