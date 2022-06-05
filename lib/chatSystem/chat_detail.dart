@@ -278,6 +278,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                     builder: (context) => TradeWindow(
                                           chatDocID: chatDocId,
                                           friendUID: friendUid,
+                                          friendName: friendName,
                                         )));
                           })
                     ],

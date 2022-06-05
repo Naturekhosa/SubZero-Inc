@@ -7,28 +7,36 @@ import 'package:swap_shop/tradeWindow/tradeWindowModel.dart';
 class TradeWindow extends StatefulWidget {
   final chatDocID;
   final friendUID;
+  final friendName;
 
   const TradeWindow(
-      {Key? key, required this.friendUID, required this.chatDocID})
+      {Key? key,
+      required this.friendUID,
+      required this.chatDocID,
+      required this.friendName})
       : super(key: key);
 
   @override
-  _TradeWindowState createState() => _TradeWindowState(friendUID, chatDocID);
+  _TradeWindowState createState() =>
+      _TradeWindowState(friendUID, chatDocID, friendName);
 }
 
 class _TradeWindowState extends State<TradeWindow> {
   final friendUID;
   final chatDocID;
+  final friendName;
   final currentUserID = FirebaseAuth.instance.currentUser?.uid;
   CollectionReference trades =
       FirebaseFirestore.instance.collection('tradeWindows');
   TradeWindowModel tm = TradeWindowModel();
   var tradeWindowID;
   String itemName = "";
+  bool delete = false;
   String imageURL = "";
+  String itemID = "";
   List yourlistings = [];
   List theirlistings = [];
-  _TradeWindowState(this.friendUID, this.chatDocID);
+  _TradeWindowState(this.friendUID, this.chatDocID, this.friendName);
 
   @override
   void initState() {
@@ -36,51 +44,35 @@ class _TradeWindowState extends State<TradeWindow> {
     super.initState();
   }
 
-  deleteItem(String item) async {
-    List temp = [];
-    List ids = [];
-    int delete = 0;
-    String docID;
+  showSnackBar(String snackText, Duration d) {
+    final snackBar = SnackBar(
+      content: Text(snackText),
+      duration: d,
+      backgroundColor: Colors.red,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  deleteItem(int index) async {
+    List docIds = [];
     await trades
         .doc(tradeWindowID)
         .collection(currentUserID!)
         .get()
-        .then((querySnapshot) => {
-              for (var doc in querySnapshot.docs)
-                {temp.add(doc.data()), ids.add(doc.id), print(temp), print(ids)}
-            });
-    for (int i = 0; i < temp.length; i += 1) {
-      if (item == yourlistings[i]['itemName'].toString()) {
-        delete = i;
+        .then((QuerySnapshot querySnapshot) async {
+      for (var result in querySnapshot.docs) {
+        docIds.add(result.id);
       }
-      docID = ids[delete];
-      await trades
-          .doc(tradeWindowID)
-          .collection(currentUserID!)
-          .doc(docID)
-          .delete();
-    }
-
-    /*  await trades
+    });
+    itemID = docIds[index];
+    await trades
         .doc(tradeWindowID)
         .collection(currentUserID!)
-        .get()
-        .then((QuerySnapshot querySnapshots) async {
-          if (querySnapshots.docs.isNotEmpty) {
-            for (var result in querySnapshots.docs) 
-            {
-            trades
-        .doc(tradeWindowID)
-        .collection(currentUserID!).doc(result.id).where('itemName', isEqualTo: {'itemName': item})
-            }
-            trades
-                .doc(tradeWindowID)
-                .collection(currentUserID!)
-                .doc(querySnapshots.docs.single.id)
-                .delete();
-
-          }
-        }); */
+        .doc(itemID)
+        .delete();
+    setState(() {
+      yourlistings.removeAt(index);
+    });
   }
 
   Future checkTradeWindow() async {
@@ -136,7 +128,8 @@ class _TradeWindowState extends State<TradeWindow> {
 
                   if (snapshot.connectionState == ConnectionState.done) {
                     yourlistings = snapshot.data as List;
-
+                    print("LISTINGS!!!!!!!!");
+                    print(yourlistings);
                     return Scaffold(
                         appBar: AppBar(
                             backgroundColor: Colors.red,
@@ -175,11 +168,11 @@ class _TradeWindowState extends State<TradeWindow> {
                                                 ElevatedButton(
                                                   child: const Text("YES"),
                                                   onPressed: () {
-                                                    String item =
-                                                        yourlistings[index]
-                                                            ['itemName'];
-                                                    deleteItem(item);
-                                                    Navigator.of(context).pop();
+                                                    setState(() {
+                                                      deleteItem(index);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    });
                                                   },
                                                 ),
                                               ],
@@ -210,7 +203,7 @@ class _TradeWindowState extends State<TradeWindow> {
                         appBar: AppBar(
                             backgroundColor: Colors.green,
                             automaticallyImplyLeading: false,
-                            title: Text(" Their Items")),
+                            title: Text(friendName + "'s Items")),
                         body: Container(
                           color: Colors.green,
                           child: ListView.builder(
