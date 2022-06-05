@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:swap_shop/models/database_manager.dart';
@@ -63,6 +64,22 @@ class Viewlist extends StatelessWidget {
               Icons.edit,
               color: Colors.white,
             ),
+          ),
+          IconButton(
+            onPressed: () async{
+              FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+              
+              // this code deletes the item posted by the user from the database
+              await firebaseFirestore
+              .collection("Listing2")
+              .doc(listingID)
+              .delete().whenComplete(() => Navigator.pop(context));
+              
+            },
+            icon: Icon(
+              Icons.delete,
+              color: Colors.white,
+            )
           )
         ],
       ),
@@ -125,3 +142,4 @@ class Viewlist extends StatelessWidget {
     );
   }
 }
+
