@@ -1,6 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:swap_shop/chatSystem/chat_detail.dart';
 import 'package:swap_shop/models/database_manager.dart';
 import 'package:swap_shop/models/user_listing_model.dart';
 import 'package:swap_shop/models/user_model.dart';
@@ -8,9 +10,13 @@ import 'package:swap_shop/screens/create_listing.dart';
 import 'package:swap_shop/screens/details_screen.dart';
 import 'package:swap_shop/screens/edit_list.dart';
 import 'package:swap_shop/screens/home_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:swap_shop/screens/main_navigation_drawer.dart';
 //   "flutter upgrade" to upgrade flutter
 
-class Viewlist extends StatelessWidget {
+class Viewlist extends StatefulWidget {
   final String description;
   final String listingProvince;
   final String listingCity;
@@ -20,7 +26,7 @@ class Viewlist extends StatelessWidget {
   final String listingID;
   final List imagesUrls;
   final List subCategories;
-  // constructor for passing the preselect data from the userlist
+
   const Viewlist(
       {Key? key,
       required this.description,
@@ -34,6 +40,11 @@ class Viewlist extends StatelessWidget {
       required this.subCategories})
       : super(key: key);
 
+  @override
+  State<Viewlist> createState() => _ViewlistState();
+}
+
+class _ViewlistState extends State<Viewlist> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,29 +75,40 @@ class Viewlist extends StatelessWidget {
               Icons.edit,
               color: Colors.white,
             ),
-          ),
-          IconButton(
-            onPressed: () async{
-              FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-              
-              // this code deletes the item posted by the user from the database
-              await firebaseFirestore
-              .collection("Listing2")
-              .doc(listingID)
-              .delete().whenComplete(() => Navigator.pop(context));
-              
-            },
-            icon: Icon(
-              Icons.delete,
-              color: Colors.white,
-            )
           )
         ],
       ),
       body: Column(children: [
-        Image.network(imagesUrls[0],
-            height: MediaQuery.of(context).size.height * 0.4,
-            fit: BoxFit.cover),
+        ClipRRect(
+            borderRadius: BorderRadius.circular(0), // Image border
+            child: CarouselSlider(
+              options: CarouselOptions(
+                height: 300.0,
+                viewportFraction: 1,
+                enableInfiniteScroll: false,
+              ),
+              items: widget.imagesUrls.map((i) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(color: Colors.amber),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(0), // Image border
+                        child: AspectRatio(
+                          aspectRatio: 15 / 9,
+                          child: Image.network(
+                            i,
+                            fit: BoxFit.fill, // use this
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            )),
         Expanded(
             child: Container(
           padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
@@ -101,45 +123,66 @@ class Viewlist extends StatelessWidget {
               children: [
                 Row(children: [
                   Text(
-                    itemName,
+                    widget.itemName,
                     style: Theme.of(context).textTheme.headline5,
                   ), //item name display
                 ]),
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text("Description : " + description)),
+                    child: Text("Description : " + widget.description)),
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text("City : " + listingCity)
+                    child: Text("City : " + widget.listingCity)
                     //style: Theme.of(context).textTheme.headlineSmall),
                     ),
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text("Province : " + listingProvince)
+                    child: Text("Province : " + widget.listingProvince)
                     //style: Theme.of(context).textTheme.headlineSmall),
                     ),
                 Padding(
                     padding: EdgeInsets.symmetric(vertical: 12.0),
-                    child: Text("Upload Date : " + timeStamp)
+                    child: Text("Upload Date : " + widget.timeStamp)
                     //style: Theme.of(context).textTheme.headlineSmall),
                     ),
-
-                //this adds an option for subcategories to be shown
-                if ((category.toString() == "Clothing") &
-                    ((subCategories[0] == "N/A") == false))
-                  Text("Clothing Size :" + subCategories[0]),
-                if ((category.toString() == "Food") &
-                    ((subCategories[0] == "N/A") == false))
-                  Text(subCategories[0]),
-                if ((category.toString() == "Shoes") &
-                    ((subCategories[0] == "N/A") == false))
-                  Text("Shoe Size : " + subCategories[0]),
+                if ((widget.subCategories[0] == "N/A") == false)
+                  Text(widget.subCategories[0]),
               ],
             ),
           ),
         ))
       ]),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          FloatingActionButton(
+            onPressed: () {
+              deleteItem(docId: widget.listingID);
+              Navigator.pop(context);
+            },
+            child: Icon(Icons.delete),
+            backgroundColor: Colors.red,
+            foregroundColor: Colors.white,
+          )
+        ],
+      ),
     );
   }
-}
 
+  //A function responsible for deleting a listing
+  static Future<void> deleteItem({
+    required String docId,
+  }) async {
+    DocumentReference documentReferencer =
+        FirebaseFirestore.instance.collection("Listing2").doc(docId);
+
+    await documentReferencer
+        .delete()
+        .whenComplete(() => Fluttertoast.showToast(
+            msg: "Listing deleted!",
+            toastLength: Toast.LENGTH_LONG,
+            backgroundColor: Color.fromARGB(255, 136, 131, 131),
+            fontSize: 20))
+        .catchError((e) => print(e));
+  }
+}
