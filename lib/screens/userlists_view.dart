@@ -1,8 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_share/flutter_share.dart';
+import 'package:share/share.dart';
 import 'package:swap_shop/models/database_manager.dart';
 import 'package:swap_shop/models/user_listing_model.dart';
 import 'package:swap_shop/models/user_model.dart';
+import 'package:swap_shop/screens/Link_details_screen.dart';
 import 'package:swap_shop/screens/create_listing.dart';
 import 'package:swap_shop/screens/details_screen.dart';
 import 'package:swap_shop/screens/edit_list.dart';
@@ -35,6 +40,7 @@ class Viewlist extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String board;
     return Scaffold(
       backgroundColor: Colors.red,
       appBar: AppBar(
@@ -117,6 +123,16 @@ class Viewlist extends StatelessWidget {
                 if ((category.toString() == "Shoes") &
                     ((subCategories[0] == "N/A") == false))
                   Text("Shoe Size : " + subCategories[0]),
+                Padding(
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    child: TextButton(
+                      child: Text("Share"),
+                      onPressed: () {
+                        buildDynamicLinks(itemName, imagesUrls[0], listingID);
+                      },
+                    )
+                    //style: Theme.of(context).textTheme.headlineSmall),
+                    ),
               ],
             ),
           ),
@@ -124,4 +140,29 @@ class Viewlist extends StatelessWidget {
       ]),
     );
   }
+}
+
+/// this creates a link for each listing  and attaches a listing id for each listing
+/// this has been some great progress.the listing has been tested it is functional.
+/// all thats left is to extract listing and point it to a view. this routing will be done in thwe main dart file
+///
+buildDynamicLinks(String title, String image, String docId) async {
+  final dynamicLinkParams = DynamicLinkParameters(
+    link: Uri.parse("https://subzeroinc.page.link/?listingID=" + docId),
+    uriPrefix: "https://subzeroinc.page.link",
+    androidParameters:
+        const AndroidParameters(packageName: "com.example.swap_shop"),
+    iosParameters: const IOSParameters(bundleId: "com.example.app.ios"),
+    socialMetaTagParameters: SocialMetaTagParameters(
+        description: '', imageUrl: Uri.parse("$image"), title: title),
+  );
+  final dynamicLink =
+      await FirebaseDynamicLinks.instance.buildShortLink(dynamicLinkParams);
+  print(dynamicLink.shortUrl.toString());
+
+  print(docId);
+
+  String desc = dynamicLink.shortUrl.toString();
+
+  await FlutterShare.share(title: title, linkUrl: desc);
 }
