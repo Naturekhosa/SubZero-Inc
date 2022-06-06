@@ -1,17 +1,24 @@
 {
     "logs": [
         {
+<<<<<<< HEAD
             "outputFile": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-night-v8\\values-night-v8.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+=======
+            "outputFile": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
+            "map": [
+                {
+                    "source": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/android/app/src/main/res/values-night/styles.xml",
+>>>>>>> b207e5fd7cfb0bf5502fce5870e14e9ca695ed35
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
-                        "startOffsets": "175,820",
+                        "startOffsets": "172,806",
                         "endLines": "7,16",
                         "endColumns": "12,12",
-                        "endOffsets": "471,986"
+                        "endOffsets": "464,970"
                     },
                     "to": {
                         "startLines": "2,7",
