@@ -1,6 +1,5 @@
 [
     {
-<<<<<<< HEAD
         "merged": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-xxhdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\android\\app\\src\\main\\res\\mipmap-xxhdpi\\ic_launcher.png"
     },
@@ -23,29 +22,5 @@
     {
         "merged": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\build\\app\\intermediates\\res\\merged\\debug\\mipmap-mdpi_ic_launcher.png.flat",
         "source": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\android\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
-=======
-        "merged": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/build/app/intermediates/res/merged/debug/mipmap-mdpi_ic_launcher.png.flat",
-        "source": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/android/app/src/main/res/mipmap-mdpi/ic_launcher.png"
-    },
-    {
-        "merged": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/build/app/intermediates/res/merged/debug/mipmap-xxhdpi_ic_launcher.png.flat",
-        "source": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png"
-    },
-    {
-        "merged": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/build/app/intermediates/res/merged/debug/drawable-v21_launch_background.xml.flat",
-        "source": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/android/app/src/main/res/drawable-v21/launch_background.xml"
-    },
-    {
-        "merged": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/build/app/intermediates/res/merged/debug/mipmap-xhdpi_ic_launcher.png.flat",
-        "source": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png"
-    },
-    {
-        "merged": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/build/app/intermediates/res/merged/debug/mipmap-hdpi_ic_launcher.png.flat",
-        "source": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/android/app/src/main/res/mipmap-hdpi/ic_launcher.png"
-    },
-    {
-        "merged": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/build/app/intermediates/res/merged/debug/mipmap-xxxhdpi_ic_launcher.png.flat",
-        "source": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
->>>>>>> b207e5fd7cfb0bf5502fce5870e14e9ca695ed35
     }
 ]

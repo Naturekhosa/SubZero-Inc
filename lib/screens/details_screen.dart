@@ -1,11 +1,17 @@
 // ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swap_shop/chatSystem/chat_detail.dart';
+import 'package:swap_shop/models/database_manager.dart';
+import 'package:swap_shop/models/user_listing_model.dart';
 import 'package:swap_shop/models/user_model.dart';
+import 'package:swap_shop/screens/create_listing.dart';
+import 'package:swap_shop/screens/details_screen.dart';
+import 'package:swap_shop/screens/home_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:swap_shop/screens/trader_profile.dart';
 //   "flutter upgrade" to upgrade flutter
 
 class DetailsScreen extends StatefulWidget {
@@ -86,15 +92,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
         leading: const BackButton(color: Colors.black),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => Trader_profile(
-                        listerusername: userModel.username.toString(),
-                        listerImageUrl: currentImageURL.toString(),
-                        listingCity: widget.listingCity,
-                        listingProvince: widget.listingProvince,
-                      )));              
-            },
+            onPressed: () {},
             icon: CircleAvatar(
               backgroundColor: Colors.transparent,
               backgroundImage: NetworkImage(

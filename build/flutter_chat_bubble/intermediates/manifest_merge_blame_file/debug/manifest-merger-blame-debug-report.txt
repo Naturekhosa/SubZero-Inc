@@ -3,10 +3,6 @@
 3    package="chat.com.flutter_chat_bubble" >
 4
 5    <uses-sdk android:minSdkVersion="16" />
-<<<<<<< HEAD
 5-->C:\Users\ratsh\Downloads\flutter_windows_3.0.1-stable\flutter\.pub-cache\hosted\pub.dartlang.org\flutter_chat_bubble-2.0.0\android\src\main\AndroidManifest.xml
-=======
-5-->/Users/Kayleize/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_chat_bubble-2.0.0/android/src/main/AndroidManifest.xml
->>>>>>> b207e5fd7cfb0bf5502fce5870e14e9ca695ed35
 6
 7</manifest>

@@ -6,10 +6,10 @@ import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
 import 'package:intl/intl.dart';
+import 'package:swap_shop/chatSystem/userlists_view.dart';
 import 'package:swap_shop/models/database_manager.dart';
 import 'package:swap_shop/models/user_listing_model.dart';
 import 'package:swap_shop/models/user_model.dart';
-import 'package:swap_shop/tradeWindow/tradeWindowDetail.dart';
 
 var _textController = new TextEditingController();
 String description = "";
@@ -25,7 +25,7 @@ List subCategories = [];
 class ChatDetail extends StatefulWidget {
   final friendUid;
 
-  const ChatDetail({Key? key, this.friendUid}) : super(key: key);
+  ChatDetail({Key? key, this.friendUid}) : super(key: key);
 
   @override
   _ChatDetailState createState() => _ChatDetailState(friendUid);
@@ -140,7 +140,9 @@ class _ChatDetailState extends State<ChatDetail> {
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+            child: Text("Loading"),
+          );
         }
         if (snapshot.hasData) {
           var data;
@@ -196,7 +198,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                               maxLines: 100,
                                               overflow: TextOverflow.ellipsis),
                                           onTap: () {
-                                            /* data['msg'] == 'Link To Listing'
+                                            data['msg'] == 'Link To Listing'
                                                 ? Navigator.of(context)
                                                     .pushReplacement(MaterialPageRoute(
                                                         builder: (context) => Viewlist(
@@ -216,7 +218,7 @@ class _ChatDetailState extends State<ChatDetail> {
                                                                 imagesUrls,
                                                             subCategories:
                                                                 subCategories)))
-                                                : null; */
+                                                : null;
                                           },
                                         )
                                       ],
@@ -226,10 +228,9 @@ class _ChatDetailState extends State<ChatDetail> {
                                       children: [
                                         Text(
                                           data['createdOn'] == null
-                                              ? formattedDate.toString()
-                                              : DateFormat('yyyy-MM-dd hh:mm')
-                                                  .format(data['createdOn']
-                                                      .toDate())
+                                              ? DateTime.now().toString()
+                                              : data['createdOn']
+                                                  .toDate()
                                                   .toString(),
                                           style: TextStyle(
                                               fontSize: 10,
@@ -268,18 +269,6 @@ class _ChatDetailState extends State<ChatDetail> {
                             showModalBottomSheet(
                                 context: context,
                                 builder: (context) => Listings());
-                          }),
-                      CupertinoButton(
-                          child: Icon(Icons.window_sharp),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => TradeWindow(
-                                          chatDocID: chatDocId,
-                                          friendUID: friendUid,
-                                          friendName: friendName,
-                                        )));
                           })
                     ],
                   )

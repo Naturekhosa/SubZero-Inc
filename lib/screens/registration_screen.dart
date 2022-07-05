@@ -6,55 +6,6 @@ import 'package:swap_shop/models/user_model.dart';
 import 'package:swap_shop/screens/login_screen.dart';
 import 'package:csc_picker/csc_picker.dart';
 
-class confirmPasswordValidator{
-  static String? validate(String? value){
-    if (value!.isEmpty) {
-          return "Passwords don't match";
-        }
-        return null;
-      }
-  }
-
-class surnameFieldValidator{
-  static String? validate(String? value){
-    RegExp regex = new RegExp(r'^.{3,}$');
-        if (value!.isEmpty) {
-          return ("Surname Cannot be Empty");
-        }
-        if (!regex.hasMatch(value)) {
-          return ("Please Enter Valid Surname (3 Characters Min)");
-        }
-        return null;
-      }
-  }
-
-class nameFieldValidator{
-  static String? validate(String? value){
-    RegExp regex = new RegExp(r'^.{3,}$');
-        if (value!.isEmpty) {
-          return ("Name Cannot be Empty");
-        }
-        if (!regex.hasMatch(value)) {
-          return ("Please Enter Valid Name (3 Characters Min)");
-        }
-        return null;
-  }
-
-}
-
-class userNameFieldValidator{
-  static String? validate(String? value){
-    RegExp regex = new RegExp(r'^.{3,}$');
-      if (value!.isEmpty) {
-            return ("Username Cannot be Empty");
-          }
-      if (!regex.hasMatch(value)) {
-            return ("Please Enter Valid Username (3 Characters Min)");
-          }
-    }
-
-}
-
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
 

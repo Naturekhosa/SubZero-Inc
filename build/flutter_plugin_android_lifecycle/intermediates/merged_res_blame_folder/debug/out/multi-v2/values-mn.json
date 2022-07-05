@@ -1,17 +1,10 @@
 {
     "logs": [
         {
-<<<<<<< HEAD
             "outputFile": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\build\\flutter_plugin_android_lifecycle\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-mn\\values-mn.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ratsh\\.gradle\\caches\\transforms-2\\files-2.1\\14b93615368c2249f1830e26ca064ab5\\core-1.6.0\\res\\values-mn\\values-mn.xml",
-=======
-            "outputFile": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/build/flutter_plugin_android_lifecycle/intermediates/res/merged/debug/values-mn/values-mn.xml",
-            "map": [
-                {
-                    "source": "/Users/Kayleize/.gradle/caches/transforms-2/files-2.1/14b93615368c2249f1830e26ca064ab5/core-1.6.0/res/values-mn/values-mn.xml",
->>>>>>> b207e5fd7cfb0bf5502fce5870e14e9ca695ed35
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -23,17 +16,10 @@
             ]
         },
         {
-<<<<<<< HEAD
             "outputFile": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\build\\flutter_plugin_android_lifecycle\\intermediates\\res\\merged\\debug\\values-mn\\values-mn.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ratsh\\.gradle\\caches\\transforms-2\\files-2.1\\14b93615368c2249f1830e26ca064ab5\\core-1.6.0\\res\\values-mn\\values-mn.xml",
-=======
-            "outputFile": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/build/flutter_plugin_android_lifecycle/intermediates/incremental/mergeDebugResources/merged.dir/values-mn/values-mn.xml",
-            "map": [
-                {
-                    "source": "/Users/Kayleize/.gradle/caches/transforms-2/files-2.1/14b93615368c2249f1830e26ca064ab5/core-1.6.0/res/values-mn/values-mn.xml",
->>>>>>> b207e5fd7cfb0bf5502fce5870e14e9ca695ed35
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

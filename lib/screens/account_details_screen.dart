@@ -7,42 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:swap_shop/models/user_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:swap_shop/screens/main_navigation_drawer.dart';
-import 'package:swap_shop/screens/registration_screen.dart';
 import 'home_screen.dart';
-
-class descriptionFieldValidator{
-  static String? validate(String? value){
-    if (value!.isEmpty) {
-          return ("Description Cannot be Empty");
-        }
-        return null;
-  }
-}
-
-class ItemNameValidator{
-  static String? validate(String? value){
-    if (value!.isEmpty) {
-          return ("Item Name Cannot be Empty");
-        }
-        return null;
-      }
-}
-
-class dateFieldValidator{
-  static String? validate(String? value){
-    if (value!.isEmpty) {
-              return ("Date is not selected");
-            }
-            return null;
-  }
-}
-class clotheSizeFieldValidator{
-  static String? validate(String? value){
-    if (value == null) {
-           return '      Please select category.';
-            }
-  }
-}
 
 class AccountDetails extends StatefulWidget {
   const AccountDetails({Key? key}) : super(key: key);
@@ -195,7 +160,17 @@ class _AccountDetailsState extends State<AccountDetails> {
       autofocus: false,
       controller: nameEditingController,
       keyboardType: TextInputType.name,
-      validator: nameFieldValidator.validate,
+      validator: (value) {
+        RegExp regex = new RegExp(r'^.{3,}$');
+        if (value!.isEmpty) {
+          return ("Name Cannot be Empty");
+        }
+
+        if (!regex.hasMatch(value)) {
+          return ("Please Enter Valid Name (3 Characters Min)");
+        }
+        return null;
+      },
       onSaved: (value) {
         nameEditingController.text = value!;
       },
@@ -216,7 +191,12 @@ class _AccountDetailsState extends State<AccountDetails> {
       autofocus: false,
       controller: surnameEditingController,
       keyboardType: TextInputType.name,
-      validator: surnameFieldValidator.validate,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ("Surname Cannot be Empty");
+        }
+        return null;
+      },
       onSaved: (value) {
         surnameEditingController.text = value!;
       },
@@ -235,7 +215,12 @@ class _AccountDetailsState extends State<AccountDetails> {
     final usernameField = TextFormField(
       autofocus: false,
       controller: usernameEditingController,
-      validator: userNameFieldValidator.validate,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ("Username Cannot be Empty");
+        }
+        return null;
+      },
       onSaved: (value) {
         usernameEditingController.text = value!;
       },

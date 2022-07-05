@@ -78,6 +78,7 @@ In an effort to avoid waste and grow communities, many people have begun operati
 •	Use a trade window whereby they will be allowed to compare trades, add to trades, make listing private, etc. 
 
 
+
 ## How to Install and Run Project
 
 Go to "Code", select "Download ZIP file"

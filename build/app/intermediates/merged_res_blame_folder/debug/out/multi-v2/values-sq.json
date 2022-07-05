@@ -1,7 +1,6 @@
 {
     "logs": [
         {
-<<<<<<< HEAD
             "outputFile": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sq\\values-sq.xml",
             "map": [
                 {
@@ -23,12 +22,6 @@
                 },
                 {
                     "source": "C:\\Users\\ratsh\\.gradle\\caches\\transforms-2\\files-2.1\\14b93615368c2249f1830e26ca064ab5\\core-1.6.0\\res\\values-sq\\values-sq.xml",
-=======
-            "outputFile": "/Volumes/Seagate Expansion Drive/0Kay/CLONE 02-06/Clone/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-sq/values-sq.xml",
-            "map": [
-                {
-                    "source": "/Users/Kayleize/.gradle/caches/transforms-2/files-2.1/14b93615368c2249f1830e26ca064ab5/core-1.6.0/res/values-sq/values-sq.xml",
->>>>>>> b207e5fd7cfb0bf5502fce5870e14e9ca695ed35
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -45,28 +38,7 @@
                     }
                 },
                 {
-<<<<<<< HEAD
                     "source": "C:\\Users\\ratsh\\.gradle\\caches\\transforms-2\\files-2.1\\4a1e8147c3db656939cfc830651ce63e\\jetified-play-services-basement-18.0.0\\res\\values-sq\\values.xml",
-=======
-                    "source": "/Users/Kayleize/.gradle/caches/transforms-2/files-2.1/4a1e8147c3db656939cfc830651ce63e/jetified-play-services-basement-18.0.0/res/values-sq/values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "195",
-                        "endColumns": "124",
-                        "endOffsets": "319"
-                    },
-                    "to": {
-                        "startLines": "10",
-                        "startColumns": "4",
-                        "startOffsets": "1324",
-                        "endColumns": "128",
-                        "endOffsets": "1448"
-                    }
-                },
-                {
-                    "source": "/Users/Kayleize/.gradle/caches/transforms-2/files-2.1/6627ebe7ef94065a47e7e8e9d66c6a9d/jetified-play-services-base-17.1.0/res/values-sq/values.xml",
->>>>>>> b207e5fd7cfb0bf5502fce5870e14e9ca695ed35
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
