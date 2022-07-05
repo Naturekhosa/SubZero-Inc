@@ -1,23 +1,16 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_core/get_core.dart';
-import 'package:swap_shop/chatSystem/chat_detail.dart';
-import 'package:swap_shop/screens/Link_details_screen.dart';
 import 'package:swap_shop/screens/Splash_Screen.dart';
 import 'package:swap_shop/screens/login_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  final PendingDynamicLinkData? initialLink =
-      await FirebaseDynamicLinks.instance.getInitialLink();
-  runApp(MyApp(initialLink));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp(PendingDynamicLinkData? initialLink, {Key? key})
-      : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override

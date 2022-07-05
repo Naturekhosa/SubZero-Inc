@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\build\\image_picker\\intermediates\\res\\merged\\debug\\values-uk\\values-uk.xml",
+            "outputFile": "C:\\Users\\2359474\\Downloads\\SubZero\\SubZero-Inc\\build\\image_picker\\intermediates\\res\\merged\\debug\\values-uk\\values-uk.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ratsh\\.gradle\\caches\\transforms-2\\files-2.1\\14b93615368c2249f1830e26ca064ab5\\core-1.6.0\\res\\values-uk\\values-uk.xml",
+                    "source": "C:\\Users\\2359474\\.gradle\\caches\\transforms-2\\files-2.1\\14b93615368c2249f1830e26ca064ab5\\core-1.6.0\\res\\values-uk\\values-uk.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -16,10 +16,10 @@
             ]
         },
         {
-            "outputFile": "C:\\Users\\ratsh\\OneDrive\\Documents\\SD_project\\SubZero-Inc\\build\\image_picker\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-uk\\values-uk.xml",
+            "outputFile": "C:\\Users\\2359474\\Downloads\\SubZero\\SubZero-Inc\\build\\image_picker\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-uk\\values-uk.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\ratsh\\.gradle\\caches\\transforms-2\\files-2.1\\14b93615368c2249f1830e26ca064ab5\\core-1.6.0\\res\\values-uk\\values-uk.xml",
+                    "source": "C:\\Users\\2359474\\.gradle\\caches\\transforms-2\\files-2.1\\14b93615368c2249f1830e26ca064ab5\\core-1.6.0\\res\\values-uk\\values-uk.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
